@@ -3,4 +3,4 @@ database:
   port: 5432
   user: "postgres"
   password: "password"
-  dbname: "gotegit st"
+  dbname: "gotest"
