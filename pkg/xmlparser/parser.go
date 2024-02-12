@@ -13,7 +13,7 @@ import (
 func ParseXML(ctx context.Context, url string, entries chan<- db.SdnEntry) error {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Ошибка запроса:", err)
+		fmt.Println("The request failed:", err)
 		return err
 	}
 	defer resp.Body.Close()
@@ -25,7 +25,7 @@ func ParseXML(ctx context.Context, url string, entries chan<- db.SdnEntry) error
 			break
 		}
 		if err != nil {
-			fmt.Println("Ошибка декодирования XML:", err)
+			fmt.Println("XML decoding error:", err)
 			return err
 		}
 

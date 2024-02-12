@@ -109,29 +109,26 @@ func WriteToDB(ctx context.Context, db *gorm.DB, entries <-chan SdnEntry) error 
 
 		select {
 		case <-ctx.Done():
-			fmt.Println("Операция записи в базу данных была отменена")
+			fmt.Println("Database write operation was canceled")
 			return ctx.Err()
 		default:
 		}
 
 		var existingEntry SdnEntry
-		// Попытка найти существующую запись по UID
 		err := db.Where("uid = ?", entry.UID).First(&existingEntry).Error
 
 		if err == gorm.ErrRecordNotFound {
-			// Если запись не найдена, создаем новую
 			if err := db.Create(&entry).Error; err != nil {
-				fmt.Printf("Ошибка при создании записи: %v\n", err)
+				fmt.Printf("Error creating record: %v\n", err)
 				return err
 			}
 		} else if err != nil {
-			fmt.Printf("Ошибка при поиске существующей записи: %v\n", err)
+			fmt.Printf("Error when searching for an existing entry: %v\n", err)
 			return err
 		} else {
-			// Если запись найдена, обновляем ее данными из entry
-			entry.ID = existingEntry.ID                   // Убедитесь, что ID обновляемой записи установлен
-			if err := db.Save(&entry).Error; err != nil { // Save обновит всю запись на основе ID
-				fmt.Printf("Ошибка при обновлении записи: %v\n", err)
+			entry.ID = existingEntry.ID
+			if err := db.Save(&entry).Error; err != nil {
+				fmt.Printf("Error updating record: %v\n", err)
 				return err
 			}
 		}
@@ -139,7 +136,6 @@ func WriteToDB(ctx context.Context, db *gorm.DB, entries <-chan SdnEntry) error 
 	return nil
 }
 
-// Заглушка функции для запроса данных из базы. Необходимо реализовать логику запроса.
 func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 	var persons []*Person
 
@@ -147,7 +143,6 @@ func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 	query := db.Model(&SdnEntry{})
 
 	if len(nameParts) == 1 {
-		// Поиск по одному слову (имя или фамилия)
 		namePart := nameParts[0]
 		if searchType == "strong" {
 			query = query.Where("LOWER(first_name) = LOWER(?) OR LOWER(last_name) = LOWER(?)", namePart, namePart)
@@ -155,7 +150,6 @@ func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 			query = query.Where("first_name ILIKE ? OR last_name ILIKE ?", "%"+namePart+"%", "%"+namePart+"%")
 		}
 	} else if len(nameParts) >= 2 {
-		// Поиск по имени и фамилии
 		firstName, lastName := nameParts[0], nameParts[len(nameParts)-1]
 		if searchType == "strong" {
 			query = query.Where("LOWER(first_name) = LOWER(?) AND LOWER(last_name) = LOWER(?)", firstName, lastName)
@@ -172,12 +166,3 @@ func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 
 	return persons, nil
 }
-
-//func getLastPublishInfo() (time.Time, int) {
-//	Запрос данных LastPublishInfo из базы
-//	Должно возвращать:
-//		<Publish_Date>02/08/2024</Publish_Date>
-//		<Record_Count>13921</Record_Count>
-//
-//	return time.Time{}, 1
-//}
