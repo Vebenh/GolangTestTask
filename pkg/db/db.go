@@ -150,7 +150,7 @@ func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 		// Поиск по одному слову (имя или фамилия)
 		namePart := nameParts[0]
 		if searchType == "strong" {
-			query = query.Where("first_name = ? OR last_name = ?", namePart, namePart)
+			query = query.Where("LOWER(first_name) = LOWER(?) OR LOWER(last_name) = LOWER(?)", namePart, namePart)
 		} else {
 			query = query.Where("first_name ILIKE ? OR last_name ILIKE ?", "%"+namePart+"%", "%"+namePart+"%")
 		}
@@ -158,7 +158,7 @@ func GetPerson(db *gorm.DB, name string, searchType string) ([]*Person, error) {
 		// Поиск по имени и фамилии
 		firstName, lastName := nameParts[0], nameParts[len(nameParts)-1]
 		if searchType == "strong" {
-			query = query.Where("first_name = ? AND last_name = ?", firstName, lastName)
+			query = query.Where("LOWER(first_name) = LOWER(?) AND LOWER(last_name) = LOWER(?)", firstName, lastName)
 		} else {
 			query = query.Where("first_name ILIKE ? OR last_name ILIKE ?", "%"+firstName+"%", "%"+lastName+"%")
 		}
