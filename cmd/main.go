@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	baseURL            = "localhost:8080"
+	baseURL            = ":8080"
 	updatePostfix      = "/update"
 	statePostfix       = "/state"
 	getNamePostfix     = "/get_names"

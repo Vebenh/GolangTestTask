@@ -1,6 +1,6 @@
 database:
-  host: localhost
+  host: "db"
   port: 5432
-  user: username
-  password: password
-  dbname: dbname
+  user: "postgres"
+  password: "password"
+  dbname: "gotegit st"

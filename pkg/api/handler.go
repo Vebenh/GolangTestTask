@@ -133,6 +133,11 @@ func (app *App) CleanTablesHandler(w http.ResponseWriter, r *http.Request) {
 	app.DB.Delete(&db.PublishInformation{}, true)
 	app.DB.Delete(&db.SdnEntry{}, true)
 	viper.Set("state", db.StateEmpty)
+	response := Response{
+		Result: true,
+		Info:   "clean",
+	}
+	sendResponse(response, w)
 	fmt.Println("Cleaning completed...")
 }
 

@@ -22,3 +22,7 @@ run:
 	go build -o ../bin/main ./cmd/main.go
 	cp ./config/*.yaml ../bin/config
 	cd ../bin && ./main
+
+rebuild:
+	docker-compose down
+	docker-compose up --build -d
