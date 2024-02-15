@@ -17,11 +17,16 @@
 #
 #.PHONY: up down logs exec-app clean
 
+
+# for local run
 run:
 	mkdir -p ../bin/config
 	go build -o ../bin/main ./cmd/main.go
 	cp ./config/*.yaml ../bin/config
 	cd ../bin && ./main
+
+build:
+	docker-compose up --build
 
 rebuild:
 	docker-compose down

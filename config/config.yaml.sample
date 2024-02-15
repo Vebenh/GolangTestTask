@@ -2,5 +2,5 @@ database:
   host: "db"
   port: 5432
   user: "postgres"
-  password: "password"
+  password: "password123fF
   dbname: "gotest"
