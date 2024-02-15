@@ -69,7 +69,7 @@ curl http://localhost:8080/state
 ```
 Должен прийти ответ:
 ```bash
-{"result":true,"info":"ok"}%                                                                                                                                                                                test/GolangTestTask [main●] » 
+{"result":false,"info":"empty"}%                                                                                                                                                                                test/GolangTestTask [main●] » 
 ```
 ## Использованные библиотеки
 
